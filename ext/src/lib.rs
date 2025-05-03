@@ -10,7 +10,7 @@ use rb_sys::{
     rb_define_module, rb_define_module_under, rb_define_singleton_method, rb_str_buf_append,
     rb_utf8_str_new_cstr, VALUE,
 };
-use std::{intrinsics::transmute, os::raw::c_char};
+use std::{mem::transmute, os::raw::c_char};
 
 // Converts a static &str to a C string usable in foreign functions.
 macro_rules! static_cstring {
@@ -20,22 +20,26 @@ macro_rules! static_cstring {
 }
 
 unsafe extern "C" fn hello(_: VALUE, name: VALUE) -> VALUE {
+    unsafe {
     rb_str_buf_append(rb_utf8_str_new_cstr(static_cstring!("Hello, ")), name)
+    }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 unsafe extern "C" fn Init_oxi_test() {
-    let oxi_module = rb_define_module(static_cstring!("Oxi"));
-    let oxi_test_module = rb_define_module_under(oxi_module, static_cstring!("Test"));
+    unsafe {
+        let oxi_module = rb_define_module(static_cstring!("Oxi"));
+        let oxi_test_module = rb_define_module_under(oxi_module, static_cstring!("Test"));
 
-    rb_define_singleton_method(
-        oxi_test_module,
-        static_cstring!("hello"),
-        Some(transmute::<unsafe extern "C" fn(VALUE, VALUE) -> VALUE, _>(
-            hello,
-        )),
-        1,
-    );
+        rb_define_singleton_method(
+            oxi_test_module,
+            static_cstring!("hello"),
+            Some(transmute::<unsafe extern "C" fn(VALUE, VALUE) -> VALUE, _>(
+                hello,
+            )),
+            1,
+        );
+    }
 }
 
 #[cfg(test)]
