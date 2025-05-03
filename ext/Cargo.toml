@@ -1,7 +1,7 @@
 [package]
 name = "oxi-test"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 authors = ["Ian Ker-Seymer <hello@ianks.com>"]
 license = "MIT"
 publish = false
@@ -10,14 +10,14 @@ publish = false
 crate-type = ["cdylib"]
 
 [dependencies]
-rb-sys = { version = "0.9", features = [
+rb-sys = { version = "0.9.111", features = [
   "bindgen-rbimpls",
   "bindgen-deprecated-types",
   "stable-api-compiled-fallback",
 ] }
 
 [dev-dependencies]
-rb-sys = { version = "0.9", features = [
+rb-sys = { version = "0.9.111", features = [
   "link-ruby",
   "bindgen-rbimpls",
   "bindgen-deprecated-types",
@@ -25,4 +25,4 @@ rb-sys = { version = "0.9", features = [
 ] }
 
 [build-dependencies]
-rb-sys-env = { version = "0.1" }
+rb-sys-env = { version = "0.2.2" }
