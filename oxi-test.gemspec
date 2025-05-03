@@ -3,7 +3,7 @@
 require_relative 'lib/oxi/test/version'
 
 Gem::Specification.new do |spec|
-  spec.name = 'oxi-test'
+  spec.name = 'oxi-test-perry'
   spec.version = Oxi::Test::VERSION
   spec.authors = ['Ian Ker-Seymer']
   spec.email = ['hello@ianks.com']
